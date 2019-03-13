@@ -1,3 +1,4 @@
+package study;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -5,19 +6,19 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 /*
-1. ê°ê°ì˜ ì¹¸ì€ ë²½ ë˜ëŠ” ë¹ˆ ì¹¸ì´ë‹¤. 
-2. ì²­ì†Œê¸°ëŠ” ë°”ë¼ë³´ëŠ” ë°©í–¥ì´ ìžˆìœ¼ë©°, ì´ ë°©í–¥ì€ ë™, ì„œ, ë‚¨, ë¶ì¤‘ í•˜ë‚˜ì´ë‹¤.
-3. ì§€ë„ì˜ ê° ì¹¸ì€ (r, c)ë¡œ ë‚˜íƒ€ë‚¼ ìˆ˜ ìžˆê³ , rì€ ë¶ìª½ìœ¼ë¡œë¶€í„° ë–¨ì–´ì§„ ì¹¸ì˜ ê°œìˆ˜, cëŠ” ì„œìª½ìœ¼ë¡œ ë¶€í„° ë–¨ì–´ì§„ ì¹¸ì˜ ê°œìˆ˜ì´ë‹¤.
-4. ë¡œë´‡ ì²­ì†Œê¸°ëŠ” ì´ë¯¸ ì²­ì†Œë˜ì–´ìžˆëŠ” ì¹¸ì„ ë˜ ì²­ì†Œí•˜ì§€ ì•Šìœ¼ë©°, ë²½ì„ í†µê³¼í•  ìˆ˜ ì—†ë‹¤.
-5. ì²«ì§¸ ì¤„ì— ì„¸ë¡œ í¬ê¸° Nê³¼ ê°€ë¡œ í¬ê¸° Mì´ ì£¼ì–´ì§„ë‹¤.
-6. ë¡œë´‡ ì²­ì†Œê¸°ê°€ ì²­ì†Œí•˜ëŠ” ì¹¸ì˜ ê°œìˆ˜ë¥¼ ì¶œë ¥í•œë‹¤.
+1. °¢°¢ÀÇ Ä­Àº º® ¶Ç´Â ºó Ä­ÀÌ´Ù. 
+2. Ã»¼Ò±â´Â ¹Ù¶óº¸´Â ¹æÇâÀÌ ÀÖÀ¸¸ç, ÀÌ ¹æÇâÀº µ¿, ¼­, ³², ºÏÁß ÇÏ³ªÀÌ´Ù.
+3. ÁöµµÀÇ °¢ Ä­Àº (r, c)·Î ³ªÅ¸³¾ ¼ö ÀÖ°í, rÀº ºÏÂÊÀ¸·ÎºÎÅÍ ¶³¾îÁø Ä­ÀÇ °³¼ö, c´Â ¼­ÂÊÀ¸·Î ºÎÅÍ ¶³¾îÁø Ä­ÀÇ °³¼öÀÌ´Ù.
+4. ·Îº¿ Ã»¼Ò±â´Â ÀÌ¹Ì Ã»¼ÒµÇ¾îÀÖ´Â Ä­À» ¶Ç Ã»¼ÒÇÏÁö ¾ÊÀ¸¸ç, º®À» Åë°úÇÒ ¼ö ¾ø´Ù.
+5. Ã¹Â° ÁÙ¿¡ ¼¼·Î Å©±â N°ú °¡·Î Å©±â MÀÌ ÁÖ¾îÁø´Ù.
+6. ·Îº¿ Ã»¼Ò±â°¡ Ã»¼ÒÇÏ´Â Ä­ÀÇ °³¼ö¸¦ Ãâ·ÂÇÑ´Ù.
 
-1. í˜„ìž¬ ìœ„ì¹˜ë¥¼ ì²­ì†Œí•œë‹¤.
-2. í˜„ìž¬ ìœ„ì¹˜ì—ì„œ í˜„ìž¬ ë°©í–¥ì„ ê¸°ì¤€ìœ¼ë¡œ ì™¼ìª½ë°©í–¥ë¶€í„° ì°¨ë¡€ëŒ€ë¡œ íƒìƒ‰ì„ ì§„í–‰í•œë‹¤.
-	(1) ì™¼ìª½ ë°©í–¥ì— ì•„ì§ ì²­ì†Œí•˜ì§€ ì•Šì€ ê³µê°„ì´ ì¡´ìž¬í•œë‹¤ë©´, ê·¸ ë°©í–¥ìœ¼ë¡œ íšŒì „í•œ ë‹¤ìŒ í•œ ì¹¸ì„ ì „ì§„í•˜ê³  1ë²ˆë¶€í„° ì§„í–‰í•œë‹¤.
-	(2) ì™¼ìª½ ë°©í–¥ì— ì²­ì†Œí•  ê³µê°„ì´ ì—†ë‹¤ë©´, ê·¸ ë°©í–¥ìœ¼ë¡œ íšŒì „í•˜ê³  2ë²ˆìœ¼ë¡œ ëŒì•„ê°„ë‹¤.
-	(3) ë„¤ ë°©í–¥ ëª¨ë‘ ì²­ì†Œê°€ ì´ë¯¸ ë˜ì–´ìžˆê±°ë‚˜ ë²½ì¸ ê²½ìš°ì—ëŠ”, ë°”ë¼ë³´ëŠ” ë°©í–¥ì„ ìœ ì§€í•œ ì±„ë¡œ í•œ ì¹¸ í›„ì§„ì„ í•˜ê³  2ë²ˆìœ¼ë¡œ ëŒì•„ê°„ë‹¤.
-	(4) ë„¤ ë°©í–¥ ëª¨ë‘ ì²­ì†Œê°€ ì´ë¯¸ ë˜ì–´ìžˆê±°ë‚˜ ë²½ì´ë©´ì„œ, ë’¤ìª½ ë°©í–¥ì´ ë²½ì´ë¼ í›„ì§„ë„ í•  ìˆ˜ ì—†ëŠ” ê²½ìš°ì—ëŠ” ìž‘ë™ì„ ë©ˆì¶˜ë‹¤.
+1. ÇöÀç À§Ä¡¸¦ Ã»¼ÒÇÑ´Ù.
+2. ÇöÀç À§Ä¡¿¡¼­ ÇöÀç ¹æÇâÀ» ±âÁØÀ¸·Î ¿ÞÂÊ¹æÇâºÎÅÍ Â÷·Ê´ë·Î Å½»öÀ» ÁøÇàÇÑ´Ù.
+	(1) ¿ÞÂÊ ¹æÇâ¿¡ ¾ÆÁ÷ Ã»¼ÒÇÏÁö ¾ÊÀº °ø°£ÀÌ Á¸ÀçÇÑ´Ù¸é, ±× ¹æÇâÀ¸·Î È¸ÀüÇÑ ´ÙÀ½ ÇÑ Ä­À» ÀüÁøÇÏ°í 1¹øºÎÅÍ ÁøÇàÇÑ´Ù.
+	(2) ¿ÞÂÊ ¹æÇâ¿¡ Ã»¼ÒÇÒ °ø°£ÀÌ ¾ø´Ù¸é, ±× ¹æÇâÀ¸·Î È¸ÀüÇÏ°í 2¹øÀ¸·Î µ¹¾Æ°£´Ù.
+	(3) ³× ¹æÇâ ¸ðµÎ Ã»¼Ò°¡ ÀÌ¹Ì µÇ¾îÀÖ°Å³ª º®ÀÎ °æ¿ì¿¡´Â, ¹Ù¶óº¸´Â ¹æÇâÀ» À¯ÁöÇÑ Ã¤·Î ÇÑ Ä­ ÈÄÁøÀ» ÇÏ°í 2¹øÀ¸·Î µ¹¾Æ°£´Ù.
+	(4) ³× ¹æÇâ ¸ðµÎ Ã»¼Ò°¡ ÀÌ¹Ì µÇ¾îÀÖ°Å³ª º®ÀÌ¸é¼­, µÚÂÊ ¹æÇâÀÌ º®ÀÌ¶ó ÈÄÁøµµ ÇÒ ¼ö ¾ø´Â °æ¿ì¿¡´Â ÀÛµ¿À» ¸ØÃá´Ù.
 */
 public class Main {
 	static int N,M,dir,count=0;
@@ -55,7 +56,7 @@ public class Main {
 				if(map[nextY][nextX]!=0)
 				{
 					check++;
-					//(3) ë„¤ ë°©í–¥ ëª¨ë‘ ì²­ì†Œê°€ ì´ë¯¸ ë˜ì–´ìžˆê±°ë‚˜ ë²½ì¸ ê²½ìš°ì—ëŠ”, ë°”ë¼ë³´ëŠ” ë°©í–¥ì„ ìœ ì§€í•œ ì±„ë¡œ í•œ ì¹¸ í›„ì§„ì„ í•˜ê³  2ë²ˆìœ¼ë¡œ ëŒì•„ê°„ë‹¤.
+					//(3) ³× ¹æÇâ ¸ðµÎ Ã»¼Ò°¡ ÀÌ¹Ì µÇ¾îÀÖ°Å³ª º®ÀÎ °æ¿ì¿¡´Â, ¹Ù¶óº¸´Â ¹æÇâÀ» À¯ÁöÇÑ Ã¤·Î ÇÑ Ä­ ÈÄÁøÀ» ÇÏ°í 2¹øÀ¸·Î µ¹¾Æ°£´Ù.
 					if(check==4)
 					{
 						check=0;
@@ -78,7 +79,7 @@ public class Main {
 							nextX=temp.x+dx[2];
 							break;
 						}
-						//(4) ë„¤ ë°©í–¥ ëª¨ë‘ ì²­ì†Œê°€ ì´ë¯¸ ë˜ì–´ìžˆê±°ë‚˜ ë²½ì´ë©´ì„œ, ë’¤ìª½ ë°©í–¥ì´ ë²½ì´ë¼ í›„ì§„ë„ í•  ìˆ˜ ì—†ëŠ” ê²½ìš°ì—ëŠ” ìž‘ë™ì„ ë©ˆì¶˜ë‹¤.
+						//(4) ³× ¹æÇâ ¸ðµÎ Ã»¼Ò°¡ ÀÌ¹Ì µÇ¾îÀÖ°Å³ª º®ÀÌ¸é¼­, µÚÂÊ ¹æÇâÀÌ º®ÀÌ¶ó ÈÄÁøµµ ÇÒ ¼ö ¾ø´Â °æ¿ì¿¡´Â ÀÛµ¿À» ¸ØÃá´Ù.
 						if(map[nextY][nextX]==1)
 						{
 							System.out.print(count);
@@ -102,7 +103,7 @@ public class Main {
 		StringTokenizer st=new StringTokenizer(br.readLine()," ");
 		N=Integer.valueOf(st.nextToken());
 		M=Integer.valueOf(st.nextToken());
-		//5. ì²«ì§¸ ì¤„ì— ì„¸ë¡œ í¬ê¸° Nê³¼ ê°€ë¡œ í¬ê¸° Mì´ ì£¼ì–´ì§„ë‹¤.
+		//5. Ã¹Â° ÁÙ¿¡ ¼¼·Î Å©±â N°ú °¡·Î Å©±â MÀÌ ÁÖ¾îÁø´Ù.
 		map=new int[N][M];
 		st=new StringTokenizer(br.readLine()," ");
 		Dot start=new Dot(Integer.valueOf(st.nextToken()),Integer.valueOf(st.nextToken()));
