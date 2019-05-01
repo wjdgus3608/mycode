@@ -20,8 +20,8 @@ public class Main {
 		q.add(start);
 		while(!q.isEmpty()) {
 			Point cur=q.poll();
-			if(cur.time==L) break;
 			visit[cur.y][cur.x]=true;
+			if(cur.time==L) break;
 			for(int i=0; i<4; i++) {
 				if(!dir[map[cur.y][cur.x]-1][i]) continue;
 				int nexty=cur.y+dy[i];
