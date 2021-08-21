@@ -1,0 +1,94 @@
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Stream;
+
+public class Main {
+    static int N;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String str = br.readLine();
+        while(str!=null){
+            N = Integer.parseInt(str);
+            Trie trie = new Trie();
+            Set<String> set = new HashSet<>();
+            float sum = 0;
+            for(int i=0; i<N; i++){
+                String word = br.readLine();
+                set.add(word);
+                trie.insert(word);
+            }
+
+            for(String word : set){
+                sum+= trie.search(word);
+            }
+            float ret = sum/set.size();
+            System.out.println(String.format("%.2f",ret));
+            str = br.readLine();
+        }
+    }
+    public static class Trie{
+        private TrieNode rootNode;
+        Trie(){
+            rootNode = new TrieNode();
+        }
+
+        public void insert(String word){
+            TrieNode nowNode = rootNode;
+
+            for(char c: word.toCharArray()){
+                nowNode.getChildNode().computeIfAbsent(c,ch->new TrieNode());
+                nowNode.setChildCount(nowNode.getChildCount()+1);
+                nowNode = nowNode.getChildNode().get(c);
+            }
+            nowNode.setIsLast(true);
+        }
+
+        public int search(String word){
+            TrieNode nowNode = rootNode;
+            int count = 1;
+            int index = 0;
+            for(char c : word.toCharArray()){
+                nowNode = nowNode.getChildNode().get(c);
+                index++;
+                if((nowNode.getIsLast() && index!=word.length()) || (nowNode.getChildNode().size()>1 && index!=word.length()))
+                count++;
+            }
+            return count;
+        }
+    }
+
+    public static class TrieNode{
+        private Map<Character,TrieNode> childNode = new HashMap<>();
+        private int childCount = 0;
+        private boolean isLast;
+
+        public Map<Character,TrieNode> getChildNode(){
+            return childNode;
+        }
+
+        public boolean getIsLast() {
+            return isLast;
+        }
+
+        public int getChildCount() {
+            return childCount;
+        }
+
+        public void setChildCount(int childCount) {
+            this.childCount = childCount;
+        }
+
+        public void setIsLast(boolean isLast){
+            this.isLast = isLast;
+        }
+    }
+}
+
+
+
