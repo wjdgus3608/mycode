@@ -1,0 +1,50 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.*;
+import java.util.stream.Collectors;
+
+
+public class Main {
+	static int R,C,T,ret;
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st=new StringTokenizer(br.readLine()," ");
+		R=Integer.parseInt(st.nextToken());
+		C=Integer.parseInt(st.nextToken());
+		
+		int[][] I = new int[R][C];
+		
+		for(int k=0; k<R; k++) {
+			st = new StringTokenizer(br.readLine()," ");
+			for(int j=0; j<C; j++) {
+				I[k][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+		
+		T = Integer.parseInt(br.readLine());
+		
+		
+		
+		for(int i=0; i<R-2; i++) {
+			for(int j=0; j<C-2; j++) {
+				int[] arr = new int[9];
+				for(int y=i; y<i+3; y++) {
+					for(int x=j; x<j+3; x++) {
+						arr[(y-i)*3+x-j] = I[y][x];
+					}
+				}
+				Arrays.sort(arr);
+				if(arr[4]>=T) ret++;
+			}
+		}
+		
+		
+		
+		
+		System.out.println(ret);
+	}
+}
+
