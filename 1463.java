@@ -9,26 +9,9 @@ import java.util.stream.Collectors;
 
 
 public class Main {
-	static int N,ret = Integer.MAX_VALUE;
+
 	
-	public static void bfs() {
-		Queue<Point> q = new LinkedList<>();
-		q.add(new Point(N,0));
-		while(!q.isEmpty()) {
-			Point cur = q.poll();
-			
-			if(cur.num==1) {
-				ret = cur.cnt;
-				return;
-			}
-			
-			if(cur.num%3==0)
-				q.add(new Point(cur.num/3,cur.cnt+1));
-			if(cur.num%2==0)
-				q.add(new Point(cur.num/2,cur.cnt+1));
-			q.add(new Point(cur.num-1,cur.cnt+1));
-		}
-	}
+	static int N,ret;
 	
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -36,19 +19,26 @@ public class Main {
 		
 		N = Integer.parseInt(st.nextToken());
 		
-		bfs();
+		int[] dp = new int[N+1];
+		if(N==1) {
+			System.out.println(0);
+			return;
+		}
+		else if(N<=3) {
+			System.out.println(1);
+			return;
+		}
+		dp[1] = 0;
+		dp[2] = 1;
+		dp[3] = 1;
+		for(int i=4; i<=N; i++) {
+			dp[i] = Math.min(i%2==0?dp[i/2]:Integer.MAX_VALUE,Math.min(i%3==0?dp[i/3]:Integer.MAX_VALUE, dp[i-1]))+1;
+		}
 		
-		System.out.println(ret);
+		System.out.print(dp[N]);
+		
 	}
 	
-}
-
-class Point{
-	int num,cnt;
-	Point(int num, int cnt){
-		this.num=num;
-		this.cnt=cnt;
-	}
 }
 
 
