@@ -47,9 +47,11 @@ public class Main {
 			}
 		}
 		
+		StringBuilder sb = new StringBuilder();
 		for(int i=2; i<N+1; i++) {
-			System.out.println(ret[i]);
+			sb.append(ret[i]+"\n");
 		}
+		System.out.print(sb.toString());
 		
 		br.close();
 	}
