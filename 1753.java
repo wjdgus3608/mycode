@@ -1,84 +1,92 @@
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.io.OutputStreamWriter;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 
 public class Main {
 	static int V,E,K;
-	static long[] dist;
-	static HashMap<Integer,Long>[] map;
-	public static void solve() {
-		PriorityQueue<Point> q= new PriorityQueue<>((a,b)->{
-			return Long.compare(a.dis, b.dis);
-		});
-		
-		q.add(new Point(K,0));
-		boolean[] visit = new boolean[V+1];
-		dist[K]=0;
-		while(!q.isEmpty()) {
-			Point cur = q.poll();
-			if(visit[cur.num]) continue;
-			visit[cur.num]=true;
-			for(int key:map[cur.num].keySet()) {
-				
-				if(dist[key]>dist[cur.num]+map[cur.num].get(key)) {
-					dist[key]=dist[cur.num]+map[cur.num].get(key);
-					
-				q.add(new Point(key,dist[key]));
-				}
-			}
-		}
-	}
-	public static void main(String[] args) throws IOException {
+	static ArrayList<Point>[] list;
+	public static void main(String[] args) throws NumberFormatException, IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		
 		V = Integer.parseInt(st.nextToken());
 		E = Integer.parseInt(st.nextToken());
 		
-		K = Integer.parseInt(br.readLine());
+		st = new StringTokenizer(br.readLine());
+		K = Integer.parseInt(st.nextToken());
 		
-		 map = new HashMap[V+1];
+		list = new ArrayList[V+1];
+		
 		for(int i=0; i<V+1; i++) {
-			map[i]=new HashMap<>();
+			list[i]=new ArrayList<>();
 		}
+		
 		for(int i=0; i<E; i++) {
 			st = new StringTokenizer(br.readLine());
+			
 			int u = Integer.parseInt(st.nextToken());
 			int v = Integer.parseInt(st.nextToken());
-			long w = Long.parseLong(st.nextToken());
+			int w = Integer.parseInt(st.nextToken());
 			
-			map[u].put(v, Math.min(map[u].getOrDefault(v, Long.MAX_VALUE), w));
+			list[u].add(new Point(v,w));
+		}
+		
+		int[] dist = new int[V+1];
+		Arrays.fill(dist, Integer.MAX_VALUE);
+		dist[K]=0;
+		
+		PriorityQueue<Point> q = new PriorityQueue<>((a,b)->{
+			return Integer.compare(a.dis, b.dis);
+		});
+		q.add(new Point(K,0));
+		boolean[] visit = new boolean[V+1];
+		
+		while(!q.isEmpty()) {
+			Point cur = q.poll();
+			if(visit[cur.num]) continue;
+			visit[cur.num]=true;
+			for(Point now:list[cur.num]) {
+				if(visit[now.num]) continue;
+				if(dist[now.num]>dist[cur.num]+now.dis) {
+					dist[now.num]=dist[cur.num]+now.dis;
+					q.add(new Point(now.num,dist[now.num]));
+				}
+			}
 			
 		}
-		dist = new long[V+1];
-		Arrays.fill(dist, Long.MAX_VALUE);
-		solve();
-		
 		
 		StringBuilder sb = new StringBuilder();
-		for(int i=1; i<=V; i++) {
-			sb.append((dist[i]!=Long.MAX_VALUE ? dist[i]:"INF")+"\n");
+		for(int i=1; i<V+1; i++) {
+			if(dist[i]==Integer.MAX_VALUE)
+				sb.append("INF\n");
+			else
+				sb.append(dist[i]+"\n");
 		}
+		
 		System.out.print(sb.toString());
 		
+		br.close();
 	}
-
+	
 }
 
 class Point{
-	int num;
-	long dis;
-	Point(int num, long dis){
+	int num, dis;
+	Point(int num, int dis){
 		this.num=num;
-		this.dis = dis;
+		this.dis=dis;
 	}
 }
+
+
+
+
 
