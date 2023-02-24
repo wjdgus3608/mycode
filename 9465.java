@@ -41,6 +41,7 @@ public class Main {
 				continue;
 			}
 			
+			
 			long[] dp = new long[N*2];
 			dp[0]=arr[0][0];
 			dp[3]=dp[0]+arr[1][1];
